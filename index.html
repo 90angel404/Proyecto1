@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crucigrama Aritmética</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    .crossword-container {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      flex-wrap: wrap;
+    }
+
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    td {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #333;
+      position: relative;
+      background-color: #e0f7fa;
+    }
+
+    .empty {
+      background-color: #333;
+      border: 1px solid #333;
+    }
+
+    input {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+      border: none;
+      background-color: transparent;
+    }
+
+    .correct {
+      background-color: #c8e6c9;
+    }
+
+    .incorrect {
+      background-color: #ffcdd2;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    h2 {
+      color: #2c3e50;
+    }
+
+    .clues {
+      text-align: left;
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .clue-number {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .cell-number {
+      position: absolute;
+      top: 1px;
+      left: 2px;
+      font-size: 10px;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🧩 Crucigrama de Aritmética</h2>
+  <p>Escribe las letras en las casillas. Luego haz clic en "Verificar respuestas".</p>
+
+  <div class="crossword-container">
+    <table>
+      <!-- Fila 0 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><span class="cell-number">1</span><input maxlength="1" data-answer="D"></td>
+        <td><input maxlength="1" data-answer="I"></td>
+        <td><input maxlength="1" data-answer="V"></td>
+        <td><input maxlength="1" data-answer="I"></td>
+        <td><input maxlength="1" data-answer="S"></td>
+        <td><input maxlength="1" data-answer="I"></td>
+        <td><input maxlength="1" data-answer="O"></td>
+        <td><input maxlength="1" data-answer="N"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        
+      </tr>
+
+      <!-- Fila 1 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><span class="cell-number">2</span><input maxlength="1" data-answer="S"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+
+      <!-- Fila 2 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><input maxlength="1" data-answer="U"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+
+      <!-- Fila 3 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><input maxlength="1" data-answer="M"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+
+      <!-- Fila 4 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><input maxlength="1" data-answer="A"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+
+      <!-- Fila 5 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><span class="cell-number">3</span><input maxlength="1" data-answer="M"></td>
+        <td><input maxlength="1" data-answer="U"></td>
+        <td><input maxlength="1" data-answer="L"></td>
+        <td><input maxlength="1" data-answer="T"></td>
+        <td><input maxlength="1" data-answer="I"></td>
+        <td><input maxlength="1" data-answer="P"></td>
+        <td><input maxlength="1" data-answer="L"></td>
+        <td><input maxlength="1" data-answer="I"></td>
+        <td><input maxlength="1" data-answer="C"></td>
+        <td><input maxlength="1" data-answer="A"></td>
+        <td><input maxlength="1" data-answer="C"></td>
+        <td><input maxlength="1" data-answer="I"></td>
+        <td><input maxlength="1" data-answer="O"></td>
+        <td><input maxlength="1" data-answer="N"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      
+      </tr>
+
+      <!-- Fila 6 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><span class="cell-number">4</span><input maxlength="1" data-answer="R"></td>
+        <td><input maxlength="1" data-answer="E"></td>
+        <td><input maxlength="1" data-answer="S"></td>
+        <td><input maxlength="1" data-answer="T"></td>
+        <td><input maxlength="1" data-answer="A"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+
+      </tr>
+
+      <!-- Fila 7 -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td><span class="cell-number">5</span><input maxlength="1" data-answer="N"></td>
+        <td><input maxlength="1" data-answer="U"></td>
+        <td><input maxlength="1" data-answer="M"></td>
+        <td><input maxlength="1" data-answer="E"></td>
+        <td><input maxlength="1" data-answer="R"></td>
+        <td><input maxlength="1" data-answer="O"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+
+      <!-- Filas adicionales para completar con cuadros negros -->
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+      <tr>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+        <td class="empty"></td>
+      </tr>
+    </table>
+
+    <div class="clues">
+      <h3>🔍 Pistas Horizontales:</h3>
+      <p><span class="clue-number">1</span>. Operación inversa de la multiplicación (8 letras)</p>
+      <p><span class="clue-number">3</span>. Repetir una cantidad varias veces (14 letras)</p>
+      <p><span class="clue-number">4</span>. Quitar una cantidad (5 letras)</p>
+      <p><span class="clue-number">5</span>. Lo que resulta de contar (7 letras)</p>
+      
+      <h3>🔍 Pistas Verticales:</h3>
+      <p><span class="clue-number">2</span>. Operación de juntar cantidades (5 letras)</p>
+    </div>
+  </div>
+
+  <button onclick="verificar()">Verificar respuestas</button>
+
+  <script>
+    function verificar() {
+      const inputs = document.querySelectorAll("input");
+      inputs.forEach(input => {
+        const correcto = input.dataset.answer;
+        if (!correcto) return;
+
+        if (input.value.toUpperCase() === correcto.toUpperCase()) {
+          input.classList.add("correct");
+          input.classList.remove("incorrect");
+        } else {
+          input.classList.remove("correct");
+          input.classList.add("incorrect");
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
