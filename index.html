@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sopa de Letras de Aritmética</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        #sopa-container {
+            display: inline-block;
+            margin: 20px auto;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        td {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+        .selected {
+            background-color: #ffeb3b;
+        }
+        .found {
+            background-color: #a5d6a7;
+        }
+        #palabras {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .palabra {
+            padding: 5px 10px;
+            background-color: #e3f2fd;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .palabra.encontrada {
+            text-decoration: line-through;
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        #mensaje {
+            margin: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sopa de Letras de Aritmética</h1>
+    <div id="sopa-container"></div>
+    <div id="palabras"></div>
+    <div id="mensaje"></div>
+
+    <script>
+        // Palabras de aritmética
+        const palabras = [
+            "SUMA", "RESTA", "MULTIPLICACION", "DIVISION",
+            "NUMERO", "FRACCION", "DECIMAL", "ENTERO",
+            "PRODUCTO", "COCIENTE", "POTENCIA", "RAIZ"
+        ];
+
+        // Configuración
+        const filas = 15;
+        const columnas = 15;
+        let sopa = [];
+        let seleccion = [];
+        let palabrasEncontradas = [];
+
+        // Inicializar la sopa de letras
+        function inicializarSopa() {
+            // Crear matriz vacía
+            sopa = Array(filas).fill().map(() => Array(columnas).fill(''));
+
+            // Direcciones posibles (8 direcciones)
+            const direcciones = [
+                [1, 0],   // Derecha
+                [0, 1],    // Abajo
+                [1, 1],    // Diagonal derecha-abajo
+                [-1, 0],   // Izquierda
+                [0, -1],   // Arriba
+                [-1, -1],  // Diagonal izquierda-arriba
+                [1, -1],   // Diagonal derecha-arriba
+                [-1, 1]    // Diagonal izquierda-abajo
+            ];
+
+            // Colocar palabras
+            palabras.forEach(palabra => {
+                palabra = palabra.toUpperCase();
+                let colocada = false;
+
+                while (!colocada) {
+                    const [dx, dy] = direcciones[Math.floor(Math.random() * direcciones.length)];
+                    const x = Math.floor(Math.random() * columnas);
+                    const y = Math.floor(Math.random() * filas);
+
+                    const xFinal = x + (palabra.length - 1) * dx;
+                    const yFinal = y + (palabra.length - 1) * dy;
+
+                    if (xFinal < 0 || xFinal >= columnas || yFinal < 0 || yFinal >= filas) continue;
+
+                    let puedeColocar = true;
+                    for (let i = 0; i < palabra.length; i++) {
+                        const cx = x + i * dx;
+                        const cy = y + i * dy;
+                        if (sopa[cy][cx] !== '' && sopa[cy][cx] !== palabra[i]) {
+                            puedeColocar = false;
+                            break;
+                        }
+                    }
+
+                    if (puedeColocar) {
+                        for (let i = 0; i < palabra.length; i++) {
+                            const cx = x + i * dx;
+                            const cy = y + i * dy;
+                            sopa[cy][cx] = palabra[i];
+                        }
+                        colocada = true;
+                    }
+                }
+            });
+
+            // Rellenar espacios vacíos con letras aleatorias
+            const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let y = 0; y < filas; y++) {
+                for (let x = 0; x < columnas; x++) {
+                    if (sopa[y][x] === '') {
+                        sopa[y][x] = letras[Math.floor(Math.random() * letras.length)];
+                    }
+                }
+            }
+
+            // Mostrar la sopa de letras
+            mostrarSopa();
+            mostrarPalabras();
+        }
+
+        // Mostrar la sopa de letras en el HTML
+        function mostrarSopa() {
+            const container = document.getElementById('sopa-container');
+            container.innerHTML = '';
+            const table = document.createElement('table');
+
+            for (let y = 0; y < filas; y++) {
+                const tr = document.createElement('tr');
+                for (let x = 0; x < columnas; x++) {
+                    const td = document.createElement('td');
+                    td.textContent = sopa[y][x];
+                    td.dataset.x = x;
+                    td.dataset.y = y;
+                    td.addEventListener('mousedown', iniciarSeleccion);
+                    td.addEventListener('mouseover', continuarSeleccion);
+                    td.addEventListener('mouseup', finalizarSeleccion);
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+
+            container.appendChild(table);
+        }
+
+        // Mostrar la lista de palabras
+        function mostrarPalabras() {
+            const container = document.getElementById('palabras');
+            container.innerHTML = '';
+            palabras.forEach(palabra => {
+                const div = document.createElement('div');
+                div.className = 'palabra';
+                div.textContent = palabra;
+                div.id = 'palabra-' + palabra;
+                container.appendChild(div);
+            });
+        }
+
+        // Funciones para seleccionar palabras
+        function iniciarSeleccion(e) {
+            seleccion = [];
+            const x = parseInt(e.target.dataset.x);
+            const y = parseInt(e.target.dataset.y);
+            seleccion.push({x, y});
+            e.target.classList.add('selected');
+            e.preventDefault(); // Evitar selección de texto
+        }
+
+        function continuarSeleccion(e) {
+            if (e.buttons !== 1 || seleccion.length === 0) return;
+            const x = parseInt(e.target.dataset.x);
+            const y = parseInt(e.target.dataset.y);
+            
+            // Limpiar selección anterior
+            document.querySelectorAll('.selected').forEach(el => {
+                if (!seleccion.some(c => c.x === parseInt(el.dataset.x) && c.y === parseInt(el.dataset.y))) {
+                    el.classList.remove('selected');
+                }
+            });
+
+            // Calcular dirección
+            const primer = seleccion[0];
+            let dx = x - primer.x;
+            let dy = y - primer.y;
+            
+            // Normalizar dirección (horizontal, vertical o diagonal)
+            if (dx !== 0 && dy !== 0 && Math.abs(dx) !== Math.abs(dy)) return;
+            
+            if (dx !== 0) dx = dx > 0 ? 1 : -1;
+            if (dy !== 0) dy = dy > 0 ? 1 : -1;
+
+            // Agregar celdas en la dirección
+            seleccion = [];
+            let cx = primer.x;
+            let cy = primer.y;
+            while (cx >= 0 && cx < columnas && cy >= 0 && cy < filas) {
+                seleccion.push({x: cx, y: cy});
+                if (cx === x && cy === y) break;
+                cx += dx;
+                cy += dy;
+            }
+
+            // Resaltar selección
+            seleccion.forEach(c => {
+                const cell = document.querySelector(`td[data-x="${c.x}"][data-y="${c.y}"]`);
+                cell.classList.add('selected');
+            });
+        }
+
+        function finalizarSeleccion() {
+            if (seleccion.length < 2) {
+                document.querySelectorAll('.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                seleccion = [];
+                return;
+            }
+
+            // Obtener la palabra seleccionada
+            let palabraSeleccionada = '';
+            seleccion.forEach(c => {
+                palabraSeleccionada += sopa[c.y][c.x];
+            });
+
+            // Verificar si es una palabra válida
+            const palabraIndex = palabras.findIndex(p => p === palabraSeleccionada || 
+                                                      p === palabraSeleccionada.split('').reverse().join(''));
+            
+            if (palabraIndex !== -1 && !palabrasEncontradas.includes(palabras[palabraIndex])) {
+                palabrasEncontradas.push(palabras[palabraIndex]);
+                document.getElementById('palabra-' + palabras[palabraIndex]).classList.add('encontrada');
+                
+                // Marcar las celdas como encontradas
+                seleccion.forEach(c => {
+                    const cell = document.querySelector(`td[data-x="${c.x}"][data-y="${c.y}"]`);
+                    cell.classList.remove('selected');
+                    cell.classList.add('found');
+                });
+
+                // Verificar si se encontraron todas
+                if (palabrasEncontradas.length === palabras.length) {
+                    document.getElementById('mensaje').textContent = '¡Felicidades! Has encontrado todas las palabras.';
+                }
+            } else {
+                // Limpiar selección si no es correcta
+                document.querySelectorAll('.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+            }
+
+            seleccion = [];
+        }
+
+        // Inicializar al cargar la página
+        window.onload = inicializarSopa;
+    </script>
+</body>
+</html>
